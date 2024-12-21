@@ -7,7 +7,7 @@ import PostDetails from "@/views/postDetails/PostDetails.vue";
 
 const routes = [
   {
-    path: "/dashboard",
+    path: "/dashboard/:id/:name",
     name: DashBoard,
     component: DashBoard,
     meta: {
@@ -42,7 +42,6 @@ const routes = [
     path: "/post/:postId",
     name: "postDetails",
     component: PostDetails,
-    props: true,
     meta: {
       title: "",
     },
@@ -52,6 +51,11 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(),
   routes,
+});
+
+router.beforeEach((to, from, next) => {
+  document.title = to.meta.title;
+  next();
 });
 
 export default router;
