@@ -35,7 +35,6 @@
 
 <script>
 export default {
-  props: ["id", "name"],
   data() {
     return {
       user: JSON.parse(localStorage.getItem("user")),

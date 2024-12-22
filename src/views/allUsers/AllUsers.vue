@@ -1,6 +1,7 @@
 <template>
   <div class="users-page">
     <h2>All Users</h2>
+    <div v-if="error" class="error">{{ error }}</div>
     <div class="filter-container">
       <input
         v-model="searchQuery"
@@ -43,6 +44,7 @@ export default {
     return {
       users: [],
       searchQuery: "",
+      error: "",
     };
   },
   computed: {
@@ -55,10 +57,14 @@ export default {
 
   methods: {
     async getAllUsers() {
-      const { data } = await axios.get(
-        "https://jsonplaceholder.typicode.com/users"
-      );
-      this.users = data;
+      try {
+        const { data } = await axios.get(
+          "https://jsonplaceholder.typicode.com/users"
+        );
+        this.users = data;
+      } catch (error) {
+        this.error = error.message;
+      }
     },
   },
   mounted() {
@@ -73,6 +79,16 @@ export default {
   max-width: 1200px;
   margin: 0 auto;
   border-radius: 8px;
+  .error {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    font-size: 1.5rem;
+    color: red;
+    font-weight: bold;
+  }
 }
 
 .filter-container {

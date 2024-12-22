@@ -1,4 +1,5 @@
 <template>
+  <div v-if="error" class="error">{{ error }}</div>
   <div>
     <h2>All Posts</h2>
     <div class="posts-container">
@@ -8,6 +9,7 @@
             <h2>Title: {{ post.title }}</h2>
             <h3>id: {{ post.id }}</h3>
             <p>Body: {{ post.body }}</p>
+            <p v-if="error" class="error">{{ error }}</p>
           </div>
         </router-link>
       </div>
@@ -22,12 +24,17 @@ export default {
   data() {
     return {
       posts: [],
+      error: "",
     };
   },
   methods: {
     async fetchPosts() {
-      const { data } = await axios.get("https://dummyjson.com/posts");
-      this.posts = data.posts;
+      try {
+        const { data } = await axios.get("https://dummyjson.com/posts");
+        this.posts = data.posts;
+      } catch (error) {
+        this.error = error.message;
+      }
     },
   },
   mounted() {
@@ -37,6 +44,16 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.error {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  font-size: 1.5rem;
+  color: red;
+  font-weight: bold;
+}
 h2 {
   text-align: center;
   font-size: 3rem;

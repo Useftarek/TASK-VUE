@@ -29,11 +29,16 @@ export default {
   },
   methods: {
     async getAllusers() {
-      const { data } = await axios.get(
-        "https://jsonplaceholder.typicode.com/users"
-      );
-      this.users = data;
+      try {
+        const { data } = await axios.get(
+          "https://jsonplaceholder.typicode.com/users"
+        );
+        this.users = data;
+      } catch (error) {
+        this.error = error.message;
+      }
     },
+
     checkUser() {
       return this.users.find(
         (user) =>
@@ -41,20 +46,20 @@ export default {
           (user.email == this.emailoruser && this.password === "password")
       );
     },
-    navigateToDashboard() {
-      this.$router.push("/dashboard/${user.id}/${user.name}");
+    navigateToDashboard(user) {
+      this.$router.push(`/dashboard/${user.id}/${user.name}`);
+    },
+    storeUser(user) {
+      localStorage.setItem("user", JSON.stringify(user));
     },
     handleLogin() {
       const user = this.checkUser();
       if (user) {
-        this.navigateToDashboard();
+        this.navigateToDashboard(user);
+        this.storeUser(user);
       } else {
         this.error = "invaild credentails";
       }
-      this.storeUser(user);
-    },
-    storeUser(user) {
-      localStorage.setItem("user", JSON.stringify(user));
     },
   },
   mounted() {

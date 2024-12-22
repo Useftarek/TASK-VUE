@@ -1,5 +1,6 @@
 <template>
   <h1>Single Post</h1>
+  <div v-if="error" class="error">{{ error }}</div>
   <div v-if="post" class="post-details">
     <h2 class="post-title">Title: {{ post.title }}</h2>
     <h3 class="post-author">Author: {{ post.id }}</h3>
@@ -14,13 +15,20 @@ export default {
   data() {
     return {
       post: null,
+      error: "",
     };
   },
   methods: {
     async fetchPostDetails() {
-      const postId = this.$route.params.postId;
-      const { data } = await axios.get(`https://dummyjson.com/posts/${postId}`);
-      this.post = data;
+      try {
+        const postId = this.$route.params.postId;
+        const { data } = await axios.get(
+          `https://dummyjson.com/posts/${postId}`
+        );
+        this.post = data;
+      } catch (error) {
+        this.error = error.message;
+      }
     },
   },
   mounted() {
@@ -30,6 +38,16 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.error {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  font-size: 1.5rem;
+  color: red;
+  font-weight: bold;
+}
 h1 {
   text-align: center;
   font-size: 3rem;
