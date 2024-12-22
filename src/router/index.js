@@ -4,6 +4,7 @@ import DashBoard from "@/views/dashBoard/DashBoard.vue";
 import Allusers from "@/views/allUsers/AllUsers.vue";
 import AllPosts from "@/views/posts/AllPosts.vue";
 import PostDetails from "@/views/postDetails/PostDetails.vue";
+import PageNotFound from "@/views/pagenotfound/PageNotFound.vue";
 
 const routes = [
   {
@@ -45,6 +46,11 @@ const routes = [
     meta: {
       title: "",
     },
+  },
+  {
+    name: "PageNotFound",
+    path: "/:pathMatch(.*)*",
+    component: PageNotFound,
   },
 ];
 
